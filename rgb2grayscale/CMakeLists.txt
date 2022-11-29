@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 if(NOT DEFINED CMAKE_CUDA_ARCHITECTURES)
-  set(CMAKE_CUDA_ARCHITECTURES 75)
+  set(CMAKE_CUDA_ARCHITECTURES 50)
 endif()
 
 project( rgb2grayscale LANGUAGES CXX CUDA )
@@ -17,7 +17,6 @@ if(NOT DEFINED CMAKE_CUDA_STANDARD)
 endif()
 
 include_directories( ${OpenCV_INCLUDE_DIRS} )
-message("++++OpenCV_INCLUDE_DIRS : ${OpenCV_INCLUDE_DIRS}")
 
 add_executable( rgb2grayscale rgb2grayscale.cu )
 set_property(TARGET rgb2grayscale
