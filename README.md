@@ -4,12 +4,7 @@
 Check
 ------
 
-* Terminology
-  - Thread * Thread Block * Thread Cluster * Grid
-  - Warp - Bank - SM
-* Tail effect
 * Shared memory usage
-* Occupancy Calculator usage
 * Bank conflict
 * Tiling
 * Paralel programming Patterns
@@ -19,21 +14,35 @@ Check
     In order to do that we can;
         - maximize the compute operations per thread.
         - minimize the time spent on memory per thread.
+* nsight and nvvp usage
+* Occupancy Calculator usage
+* Tail effect
+* What is local memory on GPU
+  L1 and SMEM using same area. It is configurable
+* What is L2 cache
 
 
 + Thread divergence
   Thread execution within Warp executed together. It there for loop or if condition statements in kernel. It is possible that some threads
   executes different path from the others. It blocks all threads in warp even some of them complete the execution. It causes some slowness in 
   execution.
-  
+
+* Bank Conflict
+  - https://www.youtube.com/watch?v=qOCUQoF_-MM
+  - SMEM is organized as 32 independent memory bank.
+  - If two threads within a wrap try to access DIFFERENT ADDRESSES in a same bank, it is 2-way bank conflict. Because the read operation of the data from the addresses should be sequential. Bank cannot provide data from two different addresses in paralel way. To SAME ADDRESS
+  accesses not a problem.
+  - In order to avoid the bank conflict padding is used. 
+  - Banks are organized in words(usually 4 bytes long)
+
 + Coalesce vs Strided memory access
-  It  is efficient that if threads with contiguous ids use contigiuous memory locations. The reason is read operation of a thread also triggers the retrieving contiguous data to cache. So that, contiguous thread don't need to fet global memory again.
+  It is efficient that if the threads with contiguous ids use contigiuous memory locations. The reason is read operation of a thread also triggers the retrieving contiguous data to cache. So that, contiguous thread don't need to fet global memory again.
   Strided access is inefficient because each threads needs to access global memory.
 
 + Memory access data speed;
   local < shared <<  global memory
   |
-  |-> register on L1 cache
+  |-> registers on L1 cache
 
 + Parallel Communication Patterns
     - map: 1-to-1
