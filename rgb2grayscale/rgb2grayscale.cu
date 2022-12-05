@@ -21,8 +21,9 @@ inline void gpuAssert(cudaError_t code, const char *file, int line) {
 __device__ int globalIdx_X() { return blockIdx.x * blockDim.x + threadIdx.x; }
 __device__ int globalIdx_Y() { return blockIdx.y * blockDim.y + threadIdx.y; }
 
-__global__ void rgba_to_grey(unsigned char *d_grey, uchar4 *d_rgba,
-                             const std::size_t rows, const std::size_t cols) {
+__global__ void rgba_to_greyscale(unsigned char *d_grey, uchar4 *d_rgba,
+                                  const std::size_t rows,
+                                  const std::size_t cols) {
     unsigned int idx = globalIdx_X();
     unsigned int idy = globalIdx_Y();
 
@@ -87,8 +88,8 @@ int main(int argc, char *argv[]) {
 
     total_t = 0;
     start_t = clock();
-    rgba_to_grey<<<gridSize, blockSize>>>(d_grey, d_rgba, image_rows,
-                                          image_cols);
+    rgba_to_greyscale<<<gridSize, blockSize>>>(d_grey, d_rgba, image_rows,
+                                               image_cols);
     end_t = clock();
     total_t += (double)(end_t - start_t) / CLOCKS_PER_SEC;
     printf("Total time GPU OP: %f\n", total_t / 10);
